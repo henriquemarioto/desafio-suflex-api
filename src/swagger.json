@@ -1,0 +1,202 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "Rick & Morty save favorites",
+    "description": "Uma API que te permite fazer login e salvar os seus personagens favoritos de Rick & Morty.",
+    "contact": {
+      "email": "henrique.marioto@outlook.com"
+    }
+  },
+  "host": "localhost:3333",
+  "basePath": "/",
+  "tags": [
+    {
+      "name": "users",
+      "description": "Rotas de usuário"
+    },
+    {
+      "name": "favoriteCharactes",
+      "description": "Rotas de Personagens"
+    }
+  ],
+  "paths": {
+    "/users": {
+      "post": {
+        "tags": ["users"],
+        "summary": "Cria um novo usuário",
+        "description": "",
+        "operationId": "createUser",
+        "consumes": ["application/json", "application/xml"],
+        "produces": ["application/json", "application/xml"],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Para criar um usuário, você deve enviar um objeto",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/CreateUser"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Sucesso",
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          },
+          "400": {
+            "description": "Faltando dados ou dados inválidos"
+          },
+          "409": {
+            "description": "Usuario já existe"
+          }
+        }
+      },
+      "get": {
+        "tags": ["users"],
+        "summary": "Listar todos os usuários",
+        "description": "",
+        "operationId": "listUsers",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "Sucesso",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/User"
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "User": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "name": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "favoriteCharacters": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/FavoriteCharacters"
+          }
+        }
+      }
+    },
+    "CreateUser": {
+      "type": "object",
+      "required": ["name", "password"],
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        }
+      }
+    },
+    "FailCreateUser": {
+      "type": "object",
+      "properties": {
+        "errors": {
+          "type": "object",
+          "properties": {
+            "body": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "message": {
+                    "type": "string"
+                  },
+                  "propertyPath": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "FavoriteCharacters": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "number"
+        },
+        "name": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string"
+        },
+        "species": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        },
+        "gender": {
+          "type": "string"
+        },
+        "origin": {
+          "$ref": "#/definitions/Place"
+        },
+        "location": {
+          "$ref": "#/definitions/Place"
+        },
+        "image": {
+          "type": "string"
+        },
+        "episode": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "url": {
+          "type": "string"
+        },
+        "created": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "Place": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "url": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}
